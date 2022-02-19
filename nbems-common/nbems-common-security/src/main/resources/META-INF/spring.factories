@@ -1,0 +1,8 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.ake.common.security.service.UserDetailsServiceImpl,\
+  com.ake.common.security.service.PermissionService,\
+  com.ake.common.security.config.MethodSecurityConfig,\
+  com.ake.common.security.handler.CustomAccessDeniedHandler,\
+  com.ake.common.security.handler.GlobalExceptionHandler
+
+  

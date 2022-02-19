@@ -1,0 +1,27 @@
+server:
+  port: 2001
+  servlet:
+    context-path: /order/
+
+spring:
+  application:
+    name: seata-order-service
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: 192.168.72.128:8848
+        # 命名空间
+        namespace: public
+      config:
+        # 配置中心地址
+        server-addr: 192.168.72.128:8848
+        # 配置文件格式
+        file-extension: yml
+        # 命名空间
+        namespace: ${nacos.namespace}
+    alibaba:
+      seata:
+        #自定义事务组名称需要与seata-server中的对应
+        tx-service-group: my_test_tx_group
+

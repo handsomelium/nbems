@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.ake.common.datascope.config.NbemsMetaObjectHandler,\
+  com.ake.common.datascope.aspect.DataScopeAspect,\
+  com.ake.common.datascope.service.AwaitUserService
+  

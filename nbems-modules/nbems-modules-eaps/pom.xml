@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>com.ake</groupId>
+		<artifactId>nbems-modules</artifactId>
+		<version>0.1.0</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>nbems-modules-eaps</artifactId>
+
+	<description>
+		nbems-modules-epas预付费模块
+	</description>
+
+	<properties>
+		<tagversion>latest</tagversion>
+	</properties>
+
+	<dependencies>
+
+		<!-- SpringCloud Ailibaba Nacos -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+
+		<!-- SpringCloud Ailibaba Nacos Config -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		</dependency>
+
+
+		<!-- SpringBoot Web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- Swagger -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.fox.version}</version>
+		</dependency>
+
+		<!-- Mysql Connector -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<!-- Minio -->
+		<dependency>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>3.0.10</version>
+		</dependency>
+
+		<!--日志收集-->
+		<dependency>
+			<groupId>de.siegmar</groupId>
+			<artifactId>logback-gelf</artifactId>
+		</dependency>
+
+		<!-- 阿里云日志服务 -->
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun.openservices</groupId>
+			<artifactId>aliyun-log-logback-appender</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.ake</groupId>
+			<artifactId>nbems-common-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.ake</groupId>
+			<artifactId>nbems-common-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.ake</groupId>
+			<artifactId>nbems-common-swagger</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.ake</groupId>
+			<artifactId>nbems-common-log</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+
+		<!--nbems ecms api-->
+		<dependency>
+			<groupId>com.ake</groupId>
+			<artifactId>nbems-api-ecms</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openjdk.jol</groupId>
+			<artifactId>jol-core</artifactId>
+			<version>0.9</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>nbems-eaps</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<layers>
+						<enabled>true</enabled>
+					</layers>
+				</configuration>
+			</plugin>
+
+
+			<!--<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.3.6</version>
+				<configuration>
+					<repository>${project.artifactId}</repository>
+					<buildArgs>
+						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
+			</plugin>-->
+
+			<!--<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>1.2.0</version>
+				<configuration>
+
+					<imageName>${project.artifactId}</imageName>
+					&lt;!&ndash; 指定 Dockerfile 路径 &ndash;&gt;
+					<dockerDirectory>${project.basedir}</dockerDirectory>
+					&lt;!&ndash; jar包位置 &ndash;&gt;
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							&lt;!&ndash; target目录下 &ndash;&gt;
+							<directory>${project.build.directory}</directory>
+							&lt;!&ndash;通过jar包名找到jar包 &ndash;&gt;
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>-->
+
+
+			<!-- 让maven不编译xls文件,但仍将其打包 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>xls</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<overwrite>true</overwrite>
+							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources/${profiles.active}</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+						<inherited></inherited>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.yml</include>
+					<include>**/*.xml</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.yml</include>
+					<include>**/*.xml</include>
+					<include>static/**</include>
+					<include>templates/**</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+
+		</resources>
+	</build>
+
+</project>

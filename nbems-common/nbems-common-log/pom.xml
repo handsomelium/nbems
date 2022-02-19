@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.ake</groupId>
+        <artifactId>nbems-common</artifactId>
+        <version>0.1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>nbems-common-log</artifactId>
+
+    <description>
+        nbems-common-log日志记录
+    </description>
+
+    <dependencies>
+
+        <!-- nbems Common Security -->
+        <dependency>
+            <groupId>com.ake</groupId>
+            <artifactId>nbems-common-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+
+
+    </dependencies>
+</project>

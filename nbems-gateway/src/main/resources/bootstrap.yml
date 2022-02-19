@@ -1,0 +1,44 @@
+server:
+  port: 9000
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: nbems-gateway
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: 150.158.50.73:8848
+        # 命名空间
+        namespace: ${nacos.namespace}
+      config:
+        # 配置中心地址
+        server-addr: 150.158.50.73:8848
+        # 配置文件格式
+        file-extension: yml
+        # 命名空间
+        namespace: ${nacos.namespace}
+        # 共享配置
+        shared-configs[0]:
+          data-id: application-${profiles.active}.${spring.cloud.nacos.config.file-extension}
+          group: DEFAULT_GROUP
+          refresh: true
+    gateway:
+      routes:
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  server:
+    port: 9000
+    servlet:
+      context-path: /
+    ssl:
+      enabled: false
+  endpoint:
+    health:
+      show-details: always

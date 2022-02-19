@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.ake.system.mapper.SysUserMapper">
+    <resultMap type="SysUser" id="SysUserResult">
+        <id     property="id"       column="id"      />
+        <result property="deptId"       column="dept_id"      />
+        <result property="projectCode"  column="project_code" />
+        <result property="userName"     column="user_name"    />
+        <result property="nickName"     column="nick_name"    />
+        <result property="email"        column="email"        />
+        <result property="phoneNumber"  column="phone_number"  />
+        <result property="sex"          column="sex"          />
+        <result property="avatar"       column="avatar"       />
+        <result property="password"     column="password"     />
+        <result property="status"       column="status"       />
+        <result property="idType"       column="id_type"      />
+        <result property="idNumber"     column="id_number"    />
+        <result property="addr"         column="addr"         />
+        <result property="delFlag"      column="del_flag"     />
+        <result property="loginIp"      column="login_ip"     />
+        <result property="loginDate"    column="login_date"   />
+        <result property="createBy"     column="create_by"    />
+        <result property="createTime"   column="create_time"  />
+        <result property="updateBy"     column="update_by"    />
+        <result property="updateTime"   column="update_time"  />
+        <result property="remark"       column="remark"       />
+        <association property="sysDept"    column="dept_id" javaType="SysDept" resultMap="deptResult" />
+        <collection  property="roles"   javaType="java.util.List"        resultMap="RoleResult" />
+    </resultMap>
+    <resultMap id="deptResult" type="SysDept">
+        <id     property="id"   column="dept_id"     />
+        <result property="parentId" column="parent_id"   />
+        <result property="deptName" column="dept_name"   />
+        <result property="orderNum" column="order_num"   />
+        <result property="leader"   column="leader"      />
+        <result property="status"   column="dept_status" />
+        <result property="createBy"     column="create_by"    />
+        <result property="createTime"   column="create_time"  />
+        <result property="updateBy"     column="update_by"    />
+        <result property="updateTime"   column="update_time"  />
+        <result property="remark"       column="remark"       />
+        <result property="delFlag"      column="del_flag"     />
+    </resultMap>
+    <resultMap id="RoleResult" type="SysRole">
+        <id     property="id"       column="role_id"        />
+        <result property="roleName"     column="role_name"      />
+        <result property="roleKey"      column="role_key"       />
+        <result property="roleSort"     column="role_sort"      />
+        <result property="dataScope"     column="data_scope"    />
+        <result property="status"       column="role_status"    />
+        <result property="createBy"     column="create_by"    />
+        <result property="createTime"   column="create_time"  />
+        <result property="updateBy"     column="update_by"    />
+        <result property="updateTime"   column="update_time"  />
+        <result property="remark"       column="remark"       />
+        <result property="delFlag"      column="del_flag"     />
+    </resultMap>
+
+    <sql id="selectUserVo">
+        select u.id, u.dept_id, u.project_code, u.user_name, u.nick_name, u.email, u.avatar, u.phone_number, u.password, u.sex, u.status, u.id_type, u.id_number, u.addr,
+        u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+        d.id as dept_id, d.parent_id, d.dept_name, d.order_num, d.leader, d.status as dept_status,
+        r.id as role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
+        from sys_user u
+		    left join sys_dept d on u.dept_id = d.id
+		    left join sys_user_role ur on u.id = ur.user_id
+		    left join sys_role r on r.id = ur.role_id
+    </sql>
+
+    <select id="selectUserList" parameterType="SysUserQuery" resultMap="SysUserResult">
+        select u.*, d.dept_name, d.leader, d.id as dept_id
+        from sys_user u
+        left join sys_dept d on u.dept_id = d.id
+		where u.del_flag = '0' AND u.dept_id is not null
+        <if test="id != null and id !=1">
+            AND u.id &lt;&gt; 1
+        </if>
+        <if test="userName != null and userName != ''">
+            AND u.user_name like concat('%', #{userName}, '%')
+        </if>
+        <if test="nickName != null and nickName != ''">
+            AND u.nick_name like concat('%', #{nickName}, '%')
+        </if>
+        <if test="projectCode != null and projectCode != ''">
+            AND u.project_code = #{projectCode}
+        </if>
+        <if test="status != null and status != ''">
+            AND u.status = #{status}
+        </if>
+        <if test="idType != null and idType != ''">
+            AND u.id_type = #{idType}
+        </if>
+        <if test="idNumber != null and idNumber != ''">
+            AND u.id_number = #{idNumber}
+        </if>
+        <if test="addr != null and addr != ''">
+            AND u.addr = like concat('%', #{addr}, '%')
+        </if>
+        <if test="phoneNumber != null and phoneNumber != ''">
+            AND u.phone_number like concat('%', #{phoneNumber}, '%')
+        </if>
+        <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+            AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
+        </if>
+        <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+            AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{endTime},'%y%m%d')
+        </if>
+        <if test="deptId != null and deptId != 0">
+            AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET (#{deptId},ancestors) ))
+        </if>
+        <if test="roleIds != null and roleIds.length > 0">
+            AND u.user_id IN (SELECT r.user_id FROM sys_user_role r WHERE r.role_id IN
+            <foreach collection="roleIds" item="roleId" open="(" separator=","  close=")">
+                #{roleId}
+            </foreach>
+            )
+        </if>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+
+    <select id="selectUserByUserName" parameterType="String" resultMap="SysUserResult">
+        <include refid="selectUserVo"/>
+        where u.user_name = #{userName}
+        and u.del_flag = '0'
+    </select>
+
+</mapper>

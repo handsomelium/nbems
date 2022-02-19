@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.ake</groupId>
+        <artifactId>nbems</artifactId>
+        <version>0.1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>nbems-common-core</module>
+        <module>nbems-common-redis</module>
+        <module>nbems-common-swagger</module>
+        <module>nbems-common-datascope</module>
+        <module>nbems-common-security</module>
+        <module>nbems-common-log</module>
+        <module>nbems-common-clickhouse</module>
+        <module>nbems-common-mongodb</module>
+    </modules>
+
+    <artifactId>nbems-common</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        nbems-common通用模块
+    </description>
+
+</project>
