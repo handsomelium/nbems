@@ -32,7 +32,6 @@ public class AutowiredAspect {
 
             }
         });
-        System.out.println(testController.getTestService());
 
     }
 }

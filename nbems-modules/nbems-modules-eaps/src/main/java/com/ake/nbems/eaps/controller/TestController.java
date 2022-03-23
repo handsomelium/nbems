@@ -5,8 +5,10 @@ import com.ake.common.log.enums.BusinessType;
 import com.ake.nbems.api.ecms.service.TestFeignService;
 import com.ake.nbems.common.core.domain.R;
 import com.ake.nbems.eaps.annotation.Autowiredd;
+import com.ake.nbems.eaps.netty.util.ChannelMapUtils;
 import com.ake.nbems.eaps.service.TestService;
 import com.ake.nbems.eaps.service.impl.TestServiceImpl;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -34,21 +36,11 @@ import java.util.stream.Stream;
 @Slf4j
 public class TestController {
 
-    @Autowiredd
-    private TestService testService;
-
 
 
     @Autowired
     private TestFeignService testFeignService;
 
-    public TestController() {
-
-    }
-
-    public TestService getTestService(){
-        return testService;
-    }
 
 
     @Value("${user.name}")
@@ -89,8 +81,12 @@ public class TestController {
 
 
     @GetMapping("testFour")
-    public R<String> testFour(){
-        return R.ok(testService.getUserInfo());
+    public R<?> testFour(){
+        JSONObject obj = new JSONObject();
+        obj.put("name", "张三");
+        obj.put("age", 18);
+        ChannelMapUtils.writeMessage("1", obj, 10);
+        return R.ok("success!");
     }
 
 
