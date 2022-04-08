@@ -3,11 +3,11 @@ package com.ake.nbems.eaps.controller;
 import com.ake.common.log.annotation.Log;
 import com.ake.common.log.enums.BusinessType;
 import com.ake.nbems.api.ecms.service.TestFeignService;
+import com.ake.nbems.eaps.domain.BillingOwner;
 import com.ake.nbems.common.core.domain.R;
-import com.ake.nbems.eaps.annotation.Autowiredd;
+import com.ake.nbems.common.core.domain.ResponseResult;
 import com.ake.nbems.eaps.netty.util.ChannelMapUtils;
 import com.ake.nbems.eaps.service.TestService;
-import com.ake.nbems.eaps.service.impl.TestServiceImpl;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +40,9 @@ public class TestController {
 
     @Autowired
     private TestFeignService testFeignService;
+
+    @Autowired
+    private TestService testService;
 
 
 
@@ -90,14 +93,11 @@ public class TestController {
     }
 
 
-    public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        list.add("123");
-        list.add("hh");
-        list.add("孙悟空");
-        list.forEach(System.out::println);
-
-
-        Stream.of("123", "hh", "孙悟空").forEach(System.out::println);
+    @GetMapping("testFive")
+    public ResponseResult<List<BillingOwner>> testFive(){
+        return ResponseResult.success(testService.getOwnerInfo());
     }
+
+
+
 }

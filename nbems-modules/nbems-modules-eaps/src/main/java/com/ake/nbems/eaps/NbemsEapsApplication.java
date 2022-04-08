@@ -27,7 +27,7 @@ public class NbemsEapsApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args){
-		nettyServer.start();
+		//nettyServer.start();
 	}
 
 }

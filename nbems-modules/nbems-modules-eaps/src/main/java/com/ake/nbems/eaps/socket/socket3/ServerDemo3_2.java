@@ -7,9 +7,11 @@ import java.util.concurrent.*;
 /**
    目标：实现服务端可以同时处理多个客户端的消息。
  */
-public class ServerDemo2 {
+public class ServerDemo3_2 {
 
-    // 使用静态变量记住一个线程池对象
+    /**
+     * 使用静态变量记住一个线程池对象
+     */
     private static ExecutorService pool = new ThreadPoolExecutor(300,
             1500, 6, TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(2)

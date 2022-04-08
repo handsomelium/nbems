@@ -91,6 +91,7 @@
 			<artifactId>nbems-common-swagger</artifactId>
 		</dependency>
 
+
 		<dependency>
 			<groupId>com.ake</groupId>
 			<artifactId>nbems-common-log</artifactId>
@@ -107,6 +108,12 @@
 			<artifactId>jol-core</artifactId>
 			<version>0.9</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+		</dependency>
+
 
 	</dependencies>
 
