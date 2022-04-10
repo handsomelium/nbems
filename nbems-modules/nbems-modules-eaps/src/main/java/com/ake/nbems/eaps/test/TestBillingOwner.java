@@ -5,16 +5,14 @@ import com.ake.nbems.eaps.domain.BillingOwner;
 import com.ake.nbems.eaps.mapper.TestMapper;
 import com.ake.nbems.eaps.service.TestService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.sun.istack.Pool;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -34,13 +32,14 @@ public class TestBillingOwner {
             1500, 6, TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(2));
 
-    Lock lock = new ReentrantLock();
+
+    // ExecutorService POOL = Executors.newFixedThreadPool(5);
 
     @Autowired
     private TestMapper testMapper;
 
     @Test
-    public void inserOwner1(){
+    public void inserOwner1() throws InterruptedException {
         long startTime = System.currentTimeMillis();
 
 
@@ -53,14 +52,23 @@ public class TestBillingOwner {
                 billingOwner.setOwnerCode(String.valueOf(finalI));
                 billingOwner.setOwnerName("业主" + finalI);
                 testMapper.insert(billingOwner);
-
+                // testMapper.insertOwnerInfo(billingOwner);
 
             });
+
+
         }
 
-        long endTime = System.currentTimeMillis();
+        POOL.shutdown();
 
-        System.out.println(endTime-startTime);
+        while (true){
+            if (POOL.isTerminated()){
+                System.out.println("用时============》" + (System.currentTimeMillis() - startTime));
+                return;
+            }
+        }
+
+
 
     }
 
@@ -73,7 +81,8 @@ public class TestBillingOwner {
             BillingOwner billingOwner = new BillingOwner();
             billingOwner.setOwnerCode(String.valueOf(i));
             billingOwner.setOwnerName("业主" + i);
-            testMapper.insert(billingOwner);
+            // testMapper.insert(billingOwner);
+            testMapper.insertOwnerInfo(billingOwner);
         }
 
         long endTime = System.currentTimeMillis();
@@ -89,5 +98,8 @@ public class TestBillingOwner {
         testMapper.delete(param);
 
     }
+
+
+
 
 }

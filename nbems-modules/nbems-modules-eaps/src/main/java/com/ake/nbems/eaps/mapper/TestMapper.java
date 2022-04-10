@@ -13,4 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface TestMapper extends BaseMapper<BillingOwner> {
 
 
+    int insertOwnerInfo(BillingOwner billingOwner);
+
+
 }

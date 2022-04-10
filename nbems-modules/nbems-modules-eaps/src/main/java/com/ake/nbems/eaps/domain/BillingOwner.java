@@ -21,6 +21,7 @@ public class BillingOwner extends BaseEntityPlus {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(type = IdType.AUTO)
     private Integer ownerId;
 
     private String  ownerCode;
