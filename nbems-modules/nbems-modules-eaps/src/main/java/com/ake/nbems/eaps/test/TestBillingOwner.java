@@ -3,9 +3,7 @@ package com.ake.nbems.eaps.test;
 import com.ake.nbems.eaps.NbemsEapsApplication;
 import com.ake.nbems.eaps.domain.BillingOwner;
 import com.ake.nbems.eaps.mapper.TestMapper;
-import com.ake.nbems.eaps.service.TestService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.sun.istack.Pool;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.concurrent.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author lium
@@ -30,7 +26,7 @@ public class TestBillingOwner {
      */
     private static final ExecutorService POOL = new ThreadPoolExecutor(300,
             1500, 6, TimeUnit.SECONDS,
-            new ArrayBlockingQueue<>(2));
+            new ArrayBlockingQueue<>(2), Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
 
 
     // ExecutorService POOL = Executors.newFixedThreadPool(5);
@@ -98,8 +94,6 @@ public class TestBillingOwner {
         testMapper.delete(param);
 
     }
-
-
 
 
 }
