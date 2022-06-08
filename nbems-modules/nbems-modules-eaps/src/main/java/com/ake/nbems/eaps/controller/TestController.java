@@ -7,6 +7,7 @@ import com.ake.nbems.eaps.domain.BillingOwner;
 import com.ake.nbems.common.core.domain.R;
 import com.ake.nbems.common.core.domain.ResponseResult;
 import com.ake.nbems.eaps.netty.util.ChannelMapUtils;
+import com.ake.nbems.eaps.service.AsyncService;
 import com.ake.nbems.eaps.service.TestService;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
@@ -20,9 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * @Author lium
@@ -43,6 +42,9 @@ public class TestController {
 
     @Autowired
     private TestService testService;
+
+    @Autowired
+    private AsyncService asyncService;
 
 
 
@@ -98,6 +100,16 @@ public class TestController {
         return ResponseResult.success(testService.getOwnerInfo());
     }
 
+
+    @GetMapping("testSix")
+    public ResponseResult<?> testSix(){
+        for (int i = 0; i < 5; i++){
+            asyncService.exect();
+        }
+
+        System.out.println("已执行完毕");
+        return ResponseResult.success();
+    }
 
 
 }

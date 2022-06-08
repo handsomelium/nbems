@@ -19,7 +19,7 @@ import java.util.concurrent.*;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = NbemsEapsApplication.class)
-public class TestBillingOwner {
+public class TestBatchInsert {
 
     /**
      * 使用静态变量记住一个线程池对象
