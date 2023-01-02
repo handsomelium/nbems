@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AsyncService {
 
+
+
     @Async("threadPoolTaskExecutor")
     public void exect(){
         try {

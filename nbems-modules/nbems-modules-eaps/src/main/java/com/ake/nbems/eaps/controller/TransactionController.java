@@ -48,16 +48,32 @@ public class TransactionController {
     @Autowired
     private TestMapper testMapper;
 
+    /**
+     * http://127.0.0.1:9010/transaction/testTransaction
+     * @return
+     */
     @GetMapping("testTransaction")
-    //@Transactional(rollbackFor = Exception.class)
+    // @Transactional(rollbackFor = Exception.class)
     public R<?> testTransaction(){
-        insert1();
-        insert2();
+        for(int i = 0; i < 5; i++){
+
+            insert1(i);
+
+        }
+
+        // insert2();
         return R.ok("操作成功");
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void insert1(){
+    public void insert1(int i){
+        BillingOwner billingOwner2 = new BillingOwner();
+        billingOwner2.setOwnerCode("000");
+        billingOwner2.setOwnerName("张老四");
+        testMapper.insert(billingOwner2);
+        if (i == 3){
+            int a =  10/0;
+        }
         BillingOwner billingOwner = new BillingOwner();
         billingOwner.setOwnerCode("111");
         billingOwner.setOwnerName("张老五");
