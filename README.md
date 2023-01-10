@@ -1,7 +1,7 @@
 # nbems
 
 #### 介绍
-一个spring cloud 微服务框架
+一个spring cloud 微服务框架，用来平时演练代码
 
 #### 软件架构
 spring cloud & alibaba
